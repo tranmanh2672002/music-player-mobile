@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_player_app/components/player_navagator.dart';
+import 'package:music_player_app/components/player_popup.dart';
 import 'package:music_player_app/constants.dart';
 import 'package:music_player_app/provider/song_provider.dart';
 import 'package:music_player_app/screens/home_screen.dart';
@@ -112,13 +113,9 @@ class _MyHomePageState extends State<MyHomePage> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               color: primaryColor,
-              child: Column(
+              child: const Column(
                 children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('exit'))
+                  PlayerPopup(),
                 ],
               ),
             ),

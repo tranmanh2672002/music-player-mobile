@@ -16,6 +16,7 @@ const Color textColorSecondary = Color.fromRGBO(142, 142, 142, 1);
 // API
 // 192.168.0.101
 // 172.16.0.60
-const String baseUrl = 'http://192.168.0.103:1000/api/v1';
-// const String baseUrl = 'http://172.16.0.60:1000/api/v1';
+// const String baseUrl = 'http://192.168.0.103:1000/api/v1';
+const String baseUrl = 'http://172.16.0.60:1000/api/v1';
 const String songsUrl = '$baseUrl/music/search';
+const String songDetailUrl = '$baseUrl/music/get-detail/';

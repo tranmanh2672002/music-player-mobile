@@ -37,6 +37,39 @@ class Song {
       };
 }
 
+class SongDetail {
+  String id;
+  String url;
+  String title;
+  String artist;
+  List<Thumbnail> thumbnails;
+
+  SongDetail({
+    required this.id,
+    required this.url,
+    required this.title,
+    required this.artist,
+    required this.thumbnails,
+  });
+
+  factory SongDetail.fromJson(Map<String, dynamic> json) => SongDetail(
+        id: json["id"],
+        url: json["url"],
+        title: json["title"],
+        artist: json["artist"],
+        thumbnails: List<Thumbnail>.from(
+            json["thumbnails"].map((x) => Thumbnail.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "url": url,
+        "title": title,
+        "artist": artist,
+        "thumbnails": List<dynamic>.from(thumbnails.map((x) => x.toJson())),
+      };
+}
+
 class Thumbnail {
   String url;
   int width;
