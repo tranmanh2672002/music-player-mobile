@@ -31,7 +31,6 @@ class SongProvider extends ChangeNotifier {
   void setCurrentSong(Song song) async {
     _currentSong = song;
     _currentSongDetail = await getSongDetail();
-    _audioPlayer.play(UrlSource(_currentSongDetail!.url));
     setAudioPlayerUrl(_currentSongDetail!.url);
     notifyListeners();
   }
@@ -55,7 +54,6 @@ class SongProvider extends ChangeNotifier {
 
   Future<SongDetail> getSongDetail() async {
     final uri = Uri.parse(songDetailUrl + _currentSong!.id);
-    print(uri);
     try {
       final response = await get(uri);
       if (response.statusCode != 200) {

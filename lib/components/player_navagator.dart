@@ -11,7 +11,7 @@ class MusicPlayerSheet extends StatefulWidget {
 class _MusicPlayerSheetState extends State<MusicPlayerSheet> {
   @override
   Widget build(BuildContext context) {
-    var song = Provider.of<SongProvider>(context);
+    var songProvider = Provider.of<SongProvider>(context);
     return Container(
       height: 66,
       color: secondaryColor,
@@ -22,7 +22,7 @@ class _MusicPlayerSheetState extends State<MusicPlayerSheet> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: Image.network(
-                  song.currentSong?.thumbnails[0].url as String,
+                  songProvider.currentSong?.thumbnails[0].url as String,
                   width: 40,
                   height: 40,
                   errorBuilder: (context, error, stackTrace) {
@@ -43,7 +43,7 @@ class _MusicPlayerSheetState extends State<MusicPlayerSheet> {
                       constraints: const BoxConstraints(maxWidth: 180),
                       margin: const EdgeInsets.only(bottom: 5),
                       child: Text(
-                        song.currentSong?.title as String,
+                        songProvider.currentSong?.title as String,
                         style: const TextStyle(
                           fontSize: 15,
                           color: textColor,
@@ -55,7 +55,7 @@ class _MusicPlayerSheetState extends State<MusicPlayerSheet> {
                     Container(
                       constraints: const BoxConstraints(maxWidth: 150),
                       child: Text(
-                        song.currentSong?.artist as String,
+                        songProvider.currentSong?.artist as String,
                         style: const TextStyle(
                           fontSize: 12,
                           color: textColor,
@@ -69,8 +69,16 @@ class _MusicPlayerSheetState extends State<MusicPlayerSheet> {
               ),
               const Spacer(), // Hoặc Expanded(flex: 1)
               IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.play_arrow_rounded, color: iconColor),
+                onPressed: () {
+                  songProvider.isPlaying
+                      ? songProvider.setPlaying(false)
+                      : songProvider.setPlaying(true);
+                },
+                icon: Icon(
+                    songProvider.isPlaying
+                        ? Icons.pause
+                        : Icons.play_arrow_rounded,
+                    color: iconColor),
               ),
             ],
           )),
