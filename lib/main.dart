@@ -44,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
+    var songProvider = Provider.of<SongProvider>(context);
     Widget currentWidgetPage = const Text('!!!');
     AppBar currentAppBar = AppBar(
       title: const Text(
@@ -169,17 +170,19 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Stack(children: [
           Container(
               color: Theme.of(context).primaryColor, child: currentWidgetPage),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: GestureDetector(
-              onTap: () {
-                showMusicPlayerPopup(context);
-              },
-              child: MusicPlayerSheet(),
-            ),
-          ),
+          songProvider.currentSong != null
+              ? Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      showMusicPlayerPopup(context);
+                    },
+                    child: MusicPlayerSheet(),
+                  ),
+                )
+              : Container(),
         ]),
       ),
     );

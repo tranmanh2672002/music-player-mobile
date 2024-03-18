@@ -11,6 +11,7 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    var songProvider = Provider.of<SongProvider>(context);
     return Stack(children: [
       Container(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -24,7 +25,9 @@ class HomeScreen extends StatelessWidget {
           child: const Text('Trending',
               style: TextStyle(fontSize: 24, color: textColor))),
       Container(
-          margin: const EdgeInsets.fromLTRB(0, 280, 0, 60),
+          margin: songProvider.currentSong != null
+              ? const EdgeInsets.fromLTRB(0, 280, 0, 60)
+              : const EdgeInsets.fromLTRB(0, 280, 0, 0),
           height: 700,
           child: const MusicTrending())
     ]);
