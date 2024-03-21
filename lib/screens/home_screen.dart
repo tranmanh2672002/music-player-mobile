@@ -15,14 +15,14 @@ class HomeScreen extends StatelessWidget {
     return Stack(children: [
       Container(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: const Text('Explore',
+          child: const Text('Khám phá',
               style: TextStyle(fontSize: 24, color: textColor))),
       Container(
           margin: const EdgeInsets.only(top: 50), child: const MusicExplore()),
       Container(
           margin: const EdgeInsets.only(top: 230),
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: const Text('Trending',
+          child: const Text('Bài hát nổi bật',
               style: TextStyle(fontSize: 24, color: textColor))),
       Container(
           margin: songProvider.currentSong != null
@@ -267,7 +267,7 @@ class HomeAppBar extends AppBar {
           title: Row(
             children: [
               Image.asset(
-                'assets/images/music.png',
+                'assets/images/logo.png',
                 width: 26,
                 height: 26,
               ),

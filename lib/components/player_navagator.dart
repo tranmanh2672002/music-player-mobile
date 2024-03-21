@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player_app/constants.dart';
 import 'package:music_player_app/provider/song_provider.dart';
@@ -13,23 +14,23 @@ class _MusicPlayerSheetState extends State<MusicPlayerSheet> {
   Widget build(BuildContext context) {
     var songProvider = Provider.of<SongProvider>(context);
     return Container(
-      height: 66,
+      height: 70,
       color: secondaryColor,
       child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Row(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
+                borderRadius: BorderRadius.circular(50.0),
                 child: Image.network(
                   songProvider.currentSong?.thumbnails[0].url as String,
-                  width: 40,
-                  height: 40,
+                  width: 50,
+                  height: 50,
                   errorBuilder: (context, error, stackTrace) {
                     return Image.asset(
                       'assets/images/music.png',
-                      width: 40,
-                      height: 40,
+                      width: 50,
+                      height: 50,
                     );
                   },
                 ),
@@ -70,12 +71,12 @@ class _MusicPlayerSheetState extends State<MusicPlayerSheet> {
               const Spacer(), // Hoặc Expanded(flex: 1)
               IconButton(
                 onPressed: () {
-                  songProvider.isPlaying
-                      ? songProvider.setPlaying(false)
-                      : songProvider.setPlaying(true);
+                  songProvider.playerState == PlayerState.playing
+                      ? songProvider.pause()
+                      : songProvider.play();
                 },
                 icon: Icon(
-                    songProvider.isPlaying
+                    songProvider.playerState == PlayerState.playing
                         ? Icons.pause
                         : Icons.play_arrow_rounded,
                     color: iconColor),

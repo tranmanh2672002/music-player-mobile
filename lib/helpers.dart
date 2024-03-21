@@ -1,4 +1,5 @@
-String convertToTimeMusic(Duration duration) {
+String convertToTimeMusic(Duration? duration) {
+  if (duration == null) return '00:00';
   final hours = duration.inHours;
   final minutes = duration.inMinutes.remainder(60);
   final seconds = duration.inSeconds.remainder(60);

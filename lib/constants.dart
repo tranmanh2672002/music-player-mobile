@@ -13,6 +13,8 @@ const Color iconColorActive = Color.fromRGBO(97, 86, 226, 1);
 const Color textColor = Color.fromRGBO(242, 242, 242, 1);
 const Color textColorSecondary = Color.fromRGBO(142, 142, 142, 1);
 
+const Color sliderColor = Color.fromRGBO(97, 86, 226, 1);
+
 // API
 // 192.168.0.101
 // 172.16.0.60

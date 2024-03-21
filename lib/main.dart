@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:music_player_app/components/player_navagator.dart';
 import 'package:music_player_app/components/player_popup.dart';
 import 'package:music_player_app/constants.dart';
+import 'package:music_player_app/provider/search_provider.dart';
 import 'package:music_player_app/provider/song_provider.dart';
 import 'package:music_player_app/screens/home_screen.dart';
+import 'package:music_player_app/screens/search_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -12,6 +14,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => SongProvider()),
+        ChangeNotifierProvider(create: (context) => SearchProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -46,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     var songProvider = Provider.of<SongProvider>(context);
     Widget currentWidgetPage = const Text('!!!');
-    AppBar currentAppBar = AppBar(
+    AppBar? currentAppBar = AppBar(
       title: const Text(
         'Music',
         style: TextStyle(
@@ -62,18 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
         currentWidgetPage = const HomeScreen();
         break;
       case 1:
-        currentAppBar = AppBar(
-          title: const Text(
-            'Music 1',
-            style: TextStyle(
-              color: textColor,
-            ),
-          ),
-          backgroundColor: Theme.of(context).primaryColor,
-        );
-        currentWidgetPage = Row(children: [
-          Container(height: 800, child: const Text('Search page'))
-        ]);
+        currentAppBar = null;
+        currentWidgetPage = const SearchScreen();
         break;
       case 2:
         currentAppBar = AppBar(
@@ -158,14 +151,14 @@ class _MyHomePageState extends State<MyHomePage> {
             type: BottomNavigationBarType.fixed,
             items: const [
               BottomNavigationBarItem(
-                  icon: Icon(Icons.home_outlined), label: 'Home'),
+                  icon: Icon(Icons.home_outlined), label: 'Trang chủ'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.search_outlined), label: 'Search'),
+                  icon: Icon(Icons.search_outlined), label: 'Tìm kiếm'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.history_outlined), label: 'History'),
+                  icon: Icon(Icons.history_outlined), label: 'Lịch sử'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.favorite_border_outlined),
-                  label: 'Favorite'),
+                  label: 'Yêu thích'),
             ]),
         body: Stack(children: [
           Container(
