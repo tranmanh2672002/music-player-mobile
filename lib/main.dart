@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:music_player_app/components/player_navagator.dart';
 import 'package:music_player_app/components/player_popup.dart';
 import 'package:music_player_app/constants.dart';
+import 'package:music_player_app/provider/page_provider.dart';
 import 'package:music_player_app/provider/playlist_provider.dart';
 import 'package:music_player_app/provider/device_provider.dart';
 import 'package:music_player_app/provider/search_provider.dart';
 import 'package:music_player_app/provider/song_provider.dart';
+import 'package:music_player_app/screens/playlist_detail_screen.dart';
 import 'package:music_player_app/screens/playlist_screen.dart';
 import 'package:music_player_app/screens/home_screen.dart';
 import 'package:music_player_app/screens/search_screen.dart';
@@ -20,6 +22,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => SearchProvider()),
         ChangeNotifierProvider(create: (context) => DeviceProvider()),
         ChangeNotifierProvider(create: (context) => PlaylistProvider()),
+        ChangeNotifierProvider(create: (context) => PageProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -49,10 +52,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     var songProvider = Provider.of<SongProvider>(context);
+    var pageProvider = Provider.of<PageProvider>(context);
     Widget currentWidgetPage = const Text('!!!');
     AppBar? currentAppBar = AppBar(
       title: const Text(
@@ -64,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Theme.of(context).primaryColor,
     );
 
-    switch (selectedIndex) {
+    switch (pageProvider.currentPage) {
       case 0:
         currentAppBar = HomeAppBar();
         currentWidgetPage = const HomeScreen();
@@ -90,6 +93,10 @@ class _MyHomePageState extends State<MyHomePage> {
       case 3:
         currentAppBar = PlaylistAppBar();
         currentWidgetPage = const PlaylistScreen();
+        break;
+      case 4:
+        currentAppBar = null;
+        currentWidgetPage = const PlaylistDetailScreen();
         break;
     }
 
@@ -134,14 +141,13 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         appBar: currentAppBar,
         bottomNavigationBar: BottomNavigationBar(
-            currentIndex: selectedIndex,
+            currentIndex:
+                pageProvider.currentPage > 3 ? 3 : pageProvider.currentPage,
             backgroundColor: Theme.of(context).primaryColor,
             selectedItemColor: iconColorActive,
             unselectedItemColor: iconColorInactive,
             onTap: (index) {
-              setState(() {
-                selectedIndex = index;
-              });
+              pageProvider.setCurrentPage(index);
             },
             type: BottomNavigationBarType.fixed,
             items: const [
@@ -152,8 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
               BottomNavigationBarItem(
                   icon: Icon(Icons.history_outlined), label: 'Lịch sử'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite_border_outlined),
-                  label: 'Yêu thích'),
+                  icon: Icon(Icons.queue_music_rounded), label: 'Playlist'),
             ]),
         body: Stack(children: [
           Container(

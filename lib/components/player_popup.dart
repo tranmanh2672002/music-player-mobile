@@ -49,7 +49,7 @@ class PlayerPopup extends StatelessWidget {
                         IconButton(
                             onPressed: () {},
                             icon: const Icon(
-                              Icons.favorite_rounded,
+                              Icons.add_to_photos_outlined,
                               color: iconColor,
                             )),
                       ],

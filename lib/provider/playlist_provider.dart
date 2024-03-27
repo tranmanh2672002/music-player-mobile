@@ -27,7 +27,6 @@ class PlaylistProvider extends ChangeNotifier {
       final List<Playlist> albums = (data as List<dynamic>).map((album) {
         return Playlist.fromJson(album);
       }).toList();
-      print(albums);
       return albums;
     } catch (e) {
       print(e);

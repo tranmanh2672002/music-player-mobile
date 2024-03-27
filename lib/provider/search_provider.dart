@@ -54,7 +54,6 @@ class SearchProvider extends ChangeNotifier {
       _songs = (data as List<dynamic>).map((song) {
         return Song.fromJson(song);
       }).toList();
-      print(_songs);
     } catch (e) {
       print(e);
       throw Exception(e);

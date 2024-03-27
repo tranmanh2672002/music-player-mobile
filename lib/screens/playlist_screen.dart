@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:music_player_app/constants.dart';
 import 'package:music_player_app/models/playlist.dart';
+import 'package:music_player_app/provider/page_provider.dart';
 import 'package:music_player_app/provider/playlist_provider.dart';
 import 'package:music_player_app/provider/device_provider.dart';
 import 'package:music_player_app/provider/song_provider.dart';
+import 'package:music_player_app/screens/playlist_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 class PlaylistScreen extends StatelessWidget {
@@ -74,8 +76,11 @@ class PlaylistItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var pageProvider = Provider.of<PageProvider>(context);
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        pageProvider.setCurrentPage(4);
+      },
       child: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 10),
