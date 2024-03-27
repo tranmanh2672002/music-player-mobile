@@ -95,66 +95,67 @@ class MusicTrendingItem extends StatelessWidget {
         context.read<SongProvider>().setCurrentSong(song);
       },
       child: SingleChildScrollView(
-          child: Container(
-        margin: const EdgeInsets.fromLTRB(20, 10, 10, 10),
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: Image.network(
-                song.thumbnails[0].url,
-                width: 60,
-                height: 60,
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    'assets/images/music.png',
-                    width: 60,
-                    height: 60,
-                  );
-                },
+        child: Container(
+          margin: const EdgeInsets.fromLTRB(20, 10, 10, 10),
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.network(
+                  song.thumbnails[0].url,
+                  width: 60,
+                  height: 60,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'assets/images/music.png',
+                      width: 60,
+                      height: 60,
+                    );
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    constraints: const BoxConstraints(maxWidth: 200),
-                    margin: const EdgeInsets.only(bottom: 5),
-                    child: Text(
-                      song.title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: textColor,
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      constraints: const BoxConstraints(maxWidth: 200),
+                      margin: const EdgeInsets.only(bottom: 5),
+                      child: Text(
+                        song.title,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: textColor,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  Container(
-                    constraints: const BoxConstraints(maxWidth: 200),
-                    child: Text(
-                      song.artist,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: textColor,
+                    Container(
+                      constraints: const BoxConstraints(maxWidth: 200),
+                      child: Text(
+                        song.artist,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: textColor,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const Spacer(), // Hoặc Expanded(flex: 1)
-            const Icon(
-              Icons.play_arrow,
-              color: iconColor,
-            ),
-          ],
+              const Spacer(), // Hoặc Expanded(flex: 1)
+              const Icon(
+                Icons.play_arrow,
+                color: iconColor,
+              ),
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 }

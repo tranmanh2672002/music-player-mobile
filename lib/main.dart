@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:music_player_app/components/player_navagator.dart';
 import 'package:music_player_app/components/player_popup.dart';
 import 'package:music_player_app/constants.dart';
+import 'package:music_player_app/provider/playlist_provider.dart';
+import 'package:music_player_app/provider/device_provider.dart';
 import 'package:music_player_app/provider/search_provider.dart';
 import 'package:music_player_app/provider/song_provider.dart';
+import 'package:music_player_app/screens/playlist_screen.dart';
 import 'package:music_player_app/screens/home_screen.dart';
 import 'package:music_player_app/screens/search_screen.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +18,8 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => SongProvider()),
         ChangeNotifierProvider(create: (context) => SearchProvider()),
+        ChangeNotifierProvider(create: (context) => DeviceProvider()),
+        ChangeNotifierProvider(create: (context) => PlaylistProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -83,18 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ]);
         break;
       case 3:
-        currentAppBar = AppBar(
-          title: const Text(
-            'Music 3',
-            style: TextStyle(
-              color: textColor,
-            ),
-          ),
-          backgroundColor: Theme.of(context).primaryColor,
-        );
-        currentWidgetPage = Row(children: [
-          Container(height: 800, child: const Text('Favorite page'))
-        ]);
+        currentAppBar = PlaylistAppBar();
+        currentWidgetPage = const PlaylistScreen();
         break;
     }
 

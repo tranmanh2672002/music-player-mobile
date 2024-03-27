@@ -1,9 +1,29 @@
-import 'package:music_player_app/models/song.dart';
+import 'dart:convert';
+
+Playlist albumFromJson(String str) => Playlist.fromJson(json.decode(str));
+
+String albumToJson(Playlist data) => json.encode(data.toJson());
 
 class Playlist {
-  final String? id;
-  final String? name;
-  final List<Song>? songs;
+  String id;
+  String name;
+  List<String> songIds;
 
-  Playlist({this.id, this.name, this.songs});
+  Playlist({
+    required this.name,
+    required this.songIds,
+    required this.id,
+  });
+
+  factory Playlist.fromJson(Map<String, dynamic> json) => Playlist(
+        name: json["name"],
+        songIds: List<String>.from(json["songIds"].map((x) => x)),
+        id: json["id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "songIds": List<String>.from(songIds.map((x) => x)),
+        "id": id,
+      };
 }
