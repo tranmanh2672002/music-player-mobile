@@ -11,7 +11,7 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var songProvider = Provider.of<SongProvider>(context);
     return Container(
-      margin: songProvider.currentSong != null
+      margin: songProvider.currentSongDetail != null
           ? const EdgeInsets.only(bottom: 60)
           : null,
       child: const Column(

@@ -163,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Stack(children: [
           Container(
               color: Theme.of(context).primaryColor, child: currentWidgetPage),
-          songProvider.currentSong != null
+          songProvider.currentSongDetail != null
               ? Positioned(
                   left: 0,
                   right: 0,

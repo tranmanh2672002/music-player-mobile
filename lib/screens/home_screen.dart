@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
           child: const Text('Bài hát nổi bật',
               style: TextStyle(fontSize: 24, color: textColor))),
       Container(
-          margin: songProvider.currentSong != null
+          margin: songProvider.currentSongDetail != null
               ? const EdgeInsets.fromLTRB(0, 280, 0, 60)
               : const EdgeInsets.fromLTRB(0, 280, 0, 0),
           height: 700,
@@ -92,7 +92,7 @@ class MusicTrendingItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.read<SongProvider>().setCurrentSong(song);
+        context.read<SongProvider>().setCurrentSong(song.id);
       },
       child: SingleChildScrollView(
         child: Container(
@@ -218,7 +218,7 @@ class MusicExploreItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          context.read<SongProvider>().setCurrentSong(song);
+          context.read<SongProvider>().setCurrentSong(song.id);
         },
         child: SingleChildScrollView(
           child: Container(

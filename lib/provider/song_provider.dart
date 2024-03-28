@@ -11,7 +11,7 @@ class SongProvider extends ChangeNotifier {
 
   bool _isLoop = false;
 
-  Song? _currentSong;
+  String? _currentSongId;
   SongDetail? _currentSongDetail;
 
   Duration _currentPosition = const Duration(seconds: 0);
@@ -20,7 +20,7 @@ class SongProvider extends ChangeNotifier {
   bool _isFetchingDetail = false;
 
   // getter
-  Song? get currentSong => _currentSong;
+  String? get currentSongId => _currentSongId;
   SongDetail? get currentSongDetail => _currentSongDetail;
   AudioPlayer get audioPlayer => _audioPlayer;
   Duration? get currentPosition => _currentPosition;
@@ -32,10 +32,11 @@ class SongProvider extends ChangeNotifier {
 
   // setter
 
-  void setCurrentSong(Song song) async {
+  void setCurrentSong(String id) async {
     resetDuration();
-    _currentSong = song;
-    _currentSongDetail = await getSongDetail();
+    _currentSongId = id;
+    print(id);
+    _currentSongDetail = await getSongDetail(id);
     setAudioPlayerUrl(_currentSongDetail!.url);
     notifyListeners();
   }
@@ -98,8 +99,8 @@ class SongProvider extends ChangeNotifier {
 
   // api
 
-  Future<SongDetail> getSongDetail() async {
-    final uri = Uri.parse(songDetailUrl + _currentSong!.id);
+  Future<SongDetail> getSongDetail(String id) async {
+    final uri = Uri.parse(songDetailUrl + id);
     try {
       _isFetchingDetail = true;
       final response = await get(uri);

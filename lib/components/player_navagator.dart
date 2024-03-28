@@ -23,7 +23,8 @@ class _MusicPlayerSheetState extends State<MusicPlayerSheet> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(50.0),
                 child: Image.network(
-                  songProvider.currentSong?.thumbnails[0].url as String,
+                  songProvider.currentSongDetail?.thumbnails[0].url as String,
+                  fit: BoxFit.cover,
                   width: 50,
                   height: 50,
                   errorBuilder: (context, error, stackTrace) {
@@ -44,7 +45,7 @@ class _MusicPlayerSheetState extends State<MusicPlayerSheet> {
                       constraints: const BoxConstraints(maxWidth: 180),
                       margin: const EdgeInsets.only(bottom: 5),
                       child: Text(
-                        songProvider.currentSong?.title as String,
+                        songProvider.currentSongDetail?.title as String,
                         style: const TextStyle(
                           fontSize: 15,
                           color: textColor,
@@ -56,7 +57,7 @@ class _MusicPlayerSheetState extends State<MusicPlayerSheet> {
                     Container(
                       constraints: const BoxConstraints(maxWidth: 150),
                       child: Text(
-                        songProvider.currentSong?.artist as String,
+                        songProvider.currentSongDetail?.artist as String,
                         style: const TextStyle(
                           fontSize: 12,
                           color: textColor,

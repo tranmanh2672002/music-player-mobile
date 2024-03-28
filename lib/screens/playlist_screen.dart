@@ -6,7 +6,6 @@ import 'package:music_player_app/provider/page_provider.dart';
 import 'package:music_player_app/provider/playlist_provider.dart';
 import 'package:music_player_app/provider/device_provider.dart';
 import 'package:music_player_app/provider/song_provider.dart';
-import 'package:music_player_app/screens/playlist_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 class PlaylistScreen extends StatelessWidget {
@@ -16,7 +15,7 @@ class PlaylistScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var songProvider = Provider.of<SongProvider>(context);
     return Container(
-      margin: songProvider.currentSong != null
+      margin: songProvider.currentSongDetail != null
           ? const EdgeInsets.only(bottom: 60)
           : null,
       child: const Padding(
@@ -74,12 +73,39 @@ class PlaylistItem extends StatelessWidget {
     required this.playlist,
   }) : super(key: key);
 
+  void showPlaylistDialog(BuildContext context, String name, String id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PlaylistDialog(
+          defaultName: name,
+          id: id,
+        );
+      },
+    );
+  }
+
+  void handleDeletePlaylist(
+      PlaylistProvider playlistProvider, String id) async {
+    final url = Uri.parse("$deletePlaylistUrl/$id");
+    final response = await delete(url);
+    if (response.statusCode != 200) {
+      throw Exception('Lỗi xóa playlist');
+    } else {
+      playlistProvider.refresh();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var pageProvider = Provider.of<PageProvider>(context);
+    var playlistProvider = Provider.of<PlaylistProvider>(context);
+
     return GestureDetector(
       onTap: () {
         pageProvider.setCurrentPage(4);
+        playlistProvider.setCurrentPlaylist(playlist);
+        playlistProvider.getDetailPlaylist();
       },
       child: SingleChildScrollView(
         child: Container(
@@ -127,10 +153,28 @@ class PlaylistItem extends StatelessWidget {
                   ],
                 ),
               ),
-              const Spacer(), // Hoặc Expanded(flex: 1)
-              const Icon(
-                Icons.delete_outline,
-                color: iconColor,
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: GestureDetector(
+                    onTap: () {
+                      showPlaylistDialog(context, playlist.name, playlist.id);
+                    },
+                    child: const Icon(
+                      Icons.edit,
+                      color: iconColor,
+                      size: 20,
+                    )),
+              ),
+              GestureDetector(
+                onTap: () {
+                  handleDeletePlaylist(playlistProvider, playlist.id);
+                },
+                child: const Icon(
+                  Icons.delete_outline,
+                  color: iconColor,
+                  size: 20,
+                ),
               ),
             ],
           ),
@@ -143,17 +187,17 @@ class PlaylistItem extends StatelessWidget {
 class PlaylistCreate extends StatelessWidget {
   const PlaylistCreate({super.key});
 
+  void showPlaylistDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const PlaylistDialog();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    void showPlaylistDialog(BuildContext context) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return const PlaylistDialog();
-        },
-      );
-    }
-
     return GestureDetector(
       onTap: () {
         showPlaylistDialog(context);
@@ -190,37 +234,60 @@ class PlaylistCreate extends StatelessWidget {
 }
 
 class PlaylistDialog extends StatelessWidget {
-  const PlaylistDialog({super.key});
+  final String? defaultName;
+  final String? id;
+  const PlaylistDialog({Key? key, this.defaultName, this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final playlistProvider = Provider.of<PlaylistProvider>(context);
-    final TextEditingController inputNameController = TextEditingController();
+    final TextEditingController inputNameController =
+        TextEditingController(text: defaultName);
     final FocusNode focusNode = FocusNode();
     final deviceProvider = Provider.of<DeviceProvider>(context);
+    final isUpdate = id != null;
 
     focusNode.requestFocus();
 
     void createPlaylist(String name, String deviceId) async {
-      final url = Uri.parse(createPlaylistUrl);
-      final body = {
-        'name': name,
-        'deviceId': deviceId,
-      };
+      if (isUpdate) {
+        final url = Uri.parse("$updatePlaylistUrl/$id");
+        final body = {
+          'name': name,
+          'deviceId': deviceId,
+        };
 
-      final response = await post(
-        url,
-        body: body,
-      );
-      if (response.statusCode != 200) {
-        throw Exception('Lỗi tạo playlist');
+        final response = await patch(
+          url,
+          body: body,
+        );
+        if (response.statusCode != 200) {
+          throw Exception('Lỗi cập nhật playlist');
+        } else {
+          Navigator.pop(context);
+          playlistProvider.refresh();
+        }
       } else {
-        Navigator.pop(context);
-        playlistProvider.refresh();
+        final url = Uri.parse(createPlaylistUrl);
+        final body = {
+          'name': name,
+          'deviceId': deviceId,
+        };
+
+        final response = await post(
+          url,
+          body: body,
+        );
+        if (response.statusCode != 200) {
+          throw Exception('Lỗi tạo playlist');
+        } else {
+          Navigator.pop(context);
+          playlistProvider.refresh();
+        }
       }
     }
 
-    void handleCreatePlaylist() async {
+    void handleSubmit() async {
       final deviceId = await deviceProvider.getDeviceId();
       createPlaylist(inputNameController.text, deviceId);
     }
@@ -253,13 +320,18 @@ class PlaylistDialog extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                handleCreatePlaylist();
+                handleSubmit();
               },
               style: ElevatedButton.styleFrom(backgroundColor: secondaryColor),
-              child: const Text(
-                'Tạo playlist',
-                style: TextStyle(color: textColor),
-              ),
+              child: isUpdate
+                  ? const Text(
+                      'Cập nhật playlist',
+                      style: TextStyle(color: textColor),
+                    )
+                  : const Text(
+                      'Tạo playlist',
+                      style: TextStyle(color: textColor),
+                    ),
             ),
           ],
         ),
